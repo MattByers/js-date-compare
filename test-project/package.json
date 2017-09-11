@@ -1,0 +1,18 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "description": "Utility for profiling and comparing some JS data libraries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matt Byers",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.11.0",
+    "date-fns": "^1.28.5",
+    "express": "^4.15.4",
+    "moment": "^2.18.1",
+    "path": "^0.12.7"
+  }
+}
