@@ -66,9 +66,9 @@ var fnsSortPerformanceTest = function (randDates, testType) {
 }
 
 
-/* ========================================= FORMAT TESTS ========================================= */
+/* ========================================= FORMAT LONG TESTS ========================================= */
 
-var momentFormatPerformanceTest = function (randDates, testType) {
+var momentFormatLongPerformanceTest = function (randDates, testType) {
     var testTypeName = nameForTestType(testType);
     
     var startTime = new Date().getTime();
@@ -77,22 +77,10 @@ var momentFormatPerformanceTest = function (randDates, testType) {
     });
     var timeTaken = new Date().getTime() - startTime;
 
-    console.log(`Finished ${testTypeName} Format Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+    console.log(`Finished ${testTypeName} Format Long Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
 }
 
-var nativeFormatPerformanceTest = function (randDates, testType) {
-    var testTypeName = nameForTestType(testType);
-
-    var startTime = new Date().getTime();
-    randDates.forEach(function(date) {
-        date.toDateString();
-    });
-    var timeTaken = new Date().getTime() - startTime;
-
-    console.log(`Finished ${testTypeName} Format Performance Test against ${TEST_LIBS.NATIVE} - Took ${timeTaken}`);
-}
-
-var fnsFormatPerformanceTest = function (randDates, testType) {
+var fnsFormatLongPerformanceTest = function (randDates, testType) {
     var testTypeName = nameForTestType(testType);
 
     var startTime = new Date().getTime();
@@ -101,11 +89,43 @@ var fnsFormatPerformanceTest = function (randDates, testType) {
     });
     var timeTaken = new Date().getTime() - startTime;
 
-    console.log(`Finished ${testTypeName} Format Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
+    console.log(`Finished ${testTypeName} Format Long Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
+}
+
+
+/* ========================================= FORMAT SHORT TESTS ========================================= */
+
+var momentFormatShortPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+    
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        date.format("DD/MM/YYYY");
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Format Short Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+}
+
+var fnsFormatShortPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        fns.format(date, "DD/MM/YYYY");
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Format Short Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
 }
 
 
 /* ========================================= BEFORE AND AFTER TESTS ========================================= */
+
+var beforeDate = new Date (2017, 2, 2);		
+var beforeMoment = moment('2017-03-02');			
+var afterDate = new Date (2016, 5, 19);		
+var afterMoment = moment('2016-06-19');
 
 var momentBeforeAfterPerformanceTest = function (randDates, testType) {
     var testTypeName = nameForTestType(testType);
@@ -144,6 +164,47 @@ var fnsBeforeAfterPerformanceTest = function (randDates, testType) {
     var timeTaken = new Date().getTime() - startTime;
 
     console.log(`Finished ${testTypeName} Before And After Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
+}
+
+
+/* ========================================= BETWEEN TESTS ========================================= */
+
+var momentBetweenPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+    
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        date.isBetween(afterDate, beforeDate);
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Between Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+}
+
+var nativeBetweenPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        var isBefore = (beforeDate - date) > 0;
+        var isAfter = (date - afterDate) > 0;
+        var isBetween = isBefore && isAfter;
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Between Performance Test against ${TEST_LIBS.NATIVE} - Took ${timeTaken}`);
+}
+
+var fnsBetweenPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        fns.isWithinRange(date, afterDate, beforeDate);
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Between Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
 }
 
 
@@ -201,7 +262,45 @@ var momentImpureAddHoursPerformanceTest = function (randDates, testType) {
     });
     var timeTaken = new Date().getTime() - startTime;
 
-    console.log(`Finished ${testTypeName} Add Hours Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+    console.log(`Finished ${testTypeName} Add Hours Impure Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+}
+
+
+/* ========================================= FROM NOW TESTS ========================================= */
+
+var momentFromNowPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+    
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        var fromNow = date.fromNow();
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} From Now Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+}
+
+var fnsFromNowPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        var newDate = fns.distanceInWordsToNow(date);
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} From Now Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
+}
+
+
+var fnsClosestToPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+
+    var startTime = new Date().getTime();
+    fns.closestTo(afterDate, randDates);
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Closest To Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
 }
 
 
@@ -211,28 +310,36 @@ var momentTest = function (testType) {
     var randDates = randomDates(testType, true);
 
     momentSortPerformanceTest(randDates, testType);
-    momentFormatPerformanceTest(randDates, testType);
+    momentFormatLongPerformanceTest(randDates, testType);
+    momentFormatShortPerformanceTest(randDates, testType);
     momentBeforeAfterPerformanceTest(randDates, testType);
+    momentBetweenPerformanceTest(randDates, testType);
     momentAddHoursPerformanceTest(randDates, testType);
     momentImpureAddHoursPerformanceTest(randDates, testType);
+    momentFromNowPerformanceTest(randDates, testType);
 }
 
 var nativeTest = function (testType) {
     var randDates = randomDates(testType);
 
     nativeSortPerformanceTest(randDates, testType);
-    nativeFormatPerformanceTest(randDates, testType);
     nativeBeforeAfterPerformanceTest(randDates, testType);
+    nativeBetweenPerformanceTest(randDates, testType);
     nativeAddHoursPerformanceTest(randDates, testType);
 }
 
 var fnsTest = function (testType) {
     var randDates = randomDates(testType);
 
+    fnsClosestToPerformanceTest(randDates, testType);
     fnsSortPerformanceTest(randDates, testType);
-    fnsFormatPerformanceTest(randDates, testType);
+    fnsFormatLongPerformanceTest(randDates, testType);
+    fnsFormatShortPerformanceTest(randDates, testType);
     fnsBeforeAfterPerformanceTest(randDates, testType);
+    fnsBetweenPerformanceTest(randDates, testType);
     fnsAddHoursPerformanceTest(randDates, testType);
+    fnsFromNowPerformanceTest(randDates, testType);
+
 }
 
 
@@ -298,13 +405,13 @@ var randomDates = function (testType, isMomentDate = false) {
 var dateTest = function (testLib) {
     switch(testLib) {
         case TEST_LIBS.MOMENT:
-            momentTest(TESTS_TYPES.LARGE);
+            momentTest(TESTS_TYPES.MEDIUM);
             break;
         case TEST_LIBS.Native:
-            nativeTest(TESTS_TYPES.LARGE);
+            nativeTest(TESTS_TYPES.MEDIUM);
             break;
         case TEST_LIBS.FNS:
-            fnsTest(TESTS_TYPES.LARGE);
+            fnsTest(TESTS_TYPES.MEDIUM);
             break;
     }
 }
