@@ -107,15 +107,6 @@ var fnsFormatPerformanceTest = function (randDates, testType) {
 
 /* ========================================= BEFORE AND AFTER TESTS ========================================= */
 
-var beforeDate = new Date (2017, 2, 2);
-var beforeMoment = moment('2017-03-02');
-console.log('Before Date: ' + beforeDate);
-console.log('Before Moment: ' + beforeMoment.format());
-var afterDate = new Date (2016, 5, 19);
-var afterMoment = moment('2016-06-19');
-console.log('After Date: ' + afterDate);
-console.log('After Moment: ' + afterMoment.format());
-
 var momentBeforeAfterPerformanceTest = function (randDates, testType) {
     var testTypeName = nameForTestType(testType);
     
@@ -156,7 +147,7 @@ var fnsBeforeAfterPerformanceTest = function (randDates, testType) {
 }
 
 
-/* ========================================= ADD HOURS TESTS ========================================= */
+/* ========================================= PURE ADD HOURS TESTS ========================================= */
 
 var hoursToAdd = 448;
 
@@ -197,6 +188,23 @@ var fnsAddHoursPerformanceTest = function (randDates, testType) {
     console.log(`Finished ${testTypeName} Add Hours Performance Test against ${TEST_LIBS.FNS} - Took ${timeTaken}`);
 }
 
+
+/* ========================================= IMPURE ADD HOURS TESTS ========================================= */
+
+// Cloning version to avoid mutation
+var momentImpureAddHoursPerformanceTest = function (randDates, testType) {
+    var testTypeName = nameForTestType(testType);
+    
+    var startTime = new Date().getTime();
+    randDates.forEach(function(date) {
+        var newMomment = date.add(hoursToAdd, 'h');
+    });
+    var timeTaken = new Date().getTime() - startTime;
+
+    console.log(`Finished ${testTypeName} Add Hours Performance Test against ${TEST_LIBS.MOMENT} - Took ${timeTaken}`);
+}
+
+
 /* ========================================= TEST WRAPPERS ========================================= */
 
 var momentTest = function (testType) {
@@ -206,6 +214,7 @@ var momentTest = function (testType) {
     momentFormatPerformanceTest(randDates, testType);
     momentBeforeAfterPerformanceTest(randDates, testType);
     momentAddHoursPerformanceTest(randDates, testType);
+    momentImpureAddHoursPerformanceTest(randDates, testType);
 }
 
 var nativeTest = function (testType) {
